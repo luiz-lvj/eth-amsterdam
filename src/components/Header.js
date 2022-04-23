@@ -1,21 +1,10 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import Web3 from "web3";
+import { useState } from "react";
 
 export default function Header(){
     const navigate = useNavigate();
-    async function connect(){
-        const provider = new WalletConnectProvider({
-          infuraId: "64b719a457bb4cafb5e9124618d5ba30",
-        });
-      
-        await provider.enable();
-      
-        const web3 = new Web3(provider);
-        console.log(web3);
-    
-    }
+    const [connected, setConnected] = useState(false);
 
     return(
         <HeaderStyle>
@@ -24,7 +13,7 @@ export default function Header(){
                 <h2 onClick={() => navigate("/")}>Home</h2>
                 <h2 onClick={() => navigate("/vaults")}>Vaults</h2>
             </MenuStyle>
-            <ConnectWalletButton onClick={connect}>Connect Wallet</ConnectWalletButton>
+            <ConnectWalletButton onClick={() => setConnected(true)}>{!connected? 'Connect Wallet' : 'abc'}</ConnectWalletButton>
         </HeaderStyle>
     );
 }
