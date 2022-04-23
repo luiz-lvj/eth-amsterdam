@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity >=0.8.0;
 
-import {ERC20} from "../ETHAmsterdam/ERC20.sol";
-import {SafeTransferLib} from "../ETHAmsterdam/SafeTransferLib.sol";
-import {FixedPointMathLib} from "../ETHAmsterdam/FixedPointMathLib.sol";
+import {ERC20} from "./ERC20.sol";
+import {SafeTransferLib} from "./SafeTransferLib.sol";
+import {FixedPointMathLib} from "./FixedPointMathLib.sol";
 
 /// @notice Minimal ERC4626 tokenized Vault implementation.
 /// @author Solmate (https://github.com/Rari-Capital/solmate/blob/main/src/mixins/ERC4626.sol)

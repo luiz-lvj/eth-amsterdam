@@ -3,4 +3,4 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
-import {ERC4626} from "solmate/mixins/ERC4626";
+import {ERC4626} from "./ERC4626Vault.sol";
