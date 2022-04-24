@@ -6,6 +6,8 @@ import { useState } from "react";
 
 export default function Deposit(){
     const [depositing, setDepositing] = useState(true);
+    const [valueDepositWithDraw, setValueDepositDraw] = useState(0);
+    const [connected, setConnected] = useState(true);
 
     return(
         <DepositStyle>
@@ -40,13 +42,27 @@ export default function Deposit(){
                 </DescriptionStyle>
                 <DepositWithDrawStyle>
                     <HeaderDeposits>
-                        <LeftHeader>
+                        <LeftHeader onClick={() => setDepositing(true)} 
+                        depositing={depositing}>
                             Deposit
                         </LeftHeader>
-                        <RightHeader>
+                        <RightHeader onClick={() => setDepositing(false)}
+                        withdrawing={!depositing}>
                             Withdraw
                         </RightHeader>
                     </HeaderDeposits>
+                    <DepositingOrWithdrawingStyle>
+                        <div>
+                            <h3>Amount (USDC)</h3>
+                            <input
+                            value={valueDepositWithDraw}
+                            onChange={ e => setValueDepositDraw(e.target.value)}
+                            ></input>
+                        </div>
+                        <DepositWithDrawButton
+                        connected={connected}
+                        >{depositing ? 'Deposit' : 'Withdraw'}</DepositWithDrawButton>
+                    </DepositingOrWithdrawingStyle>
                 </DepositWithDrawStyle>
             </BottomStyle>
             <Footer/>
@@ -136,7 +152,6 @@ const DepositWithDrawStyle = styled.div`
 const HeaderDeposits = styled.div`
     display: flex;
     flex-direction: row;
-    border-bottom: 2px solid #08FBEC;
     height: 50px;
 `;
 
@@ -148,7 +163,11 @@ const LeftHeader = styled.h1`
     color: #FFFFFF;
     align-items: center;
     font-weight: bold;
-    border-right: 2px solid #08FBEC;
+    border-bottom: ${props => props.depositing ? '2px solid #08FBEC;' : 'none;'}
+    :hover{
+        opacity: 0.5;
+        cursor: pointer;
+    }
 `;
 
 const RightHeader = styled.h1`
@@ -159,4 +178,49 @@ const RightHeader = styled.h1`
     color: #FFFFFF;
     align-items: center;
     font-weight: bold;
+    border-bottom: ${props => props.withdrawing ? '2px solid #08FBEC;' : 'none;'}
+    :hover{
+        opacity: 0.5;
+        cursor: pointer;
+    }
+`;
+
+const DepositingOrWithdrawingStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 250px;
+    margin-bottom: 20px;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        width: 80%;
+        margin-top: 15px;
+        h3{
+            color: #FFFFFF;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input{
+            border: none;
+            background: #303A4F;
+            height: 45px;
+        }
+    }
+`;
+
+const DepositWithDrawButton = styled.button`
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 20px;
+    background: #068189;
+    border: none;
+    width: 55%;
+    height: 61px;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: ${props => props.connected ? '1' : '0.4'};
 `;
