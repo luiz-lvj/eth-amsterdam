@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Footer from "./Footer";
 import Header from "./Header";
-import usdcImg from "../img/usdc.png";
 import { useState } from "react";
 
 export default function Deposit({
@@ -9,6 +8,25 @@ export default function Deposit({
 }){
     const [depositing, setDepositing] = useState(true);
     const [valueDepositWithDraw, setValueDepositDraw] = useState(0);
+    const [balance, setBalance] = useState(0);
+    const [vault, setVault] = useState(100000);
+    const [ratio, setRatio] = useState('1');
+
+    function handleDepositWithDraw(){
+        if(depositing){
+            setBalance('50,000');
+            setVault('150,000');
+            return;
+        }
+        setBalance(0);
+        setVault('100,000');
+    }
+
+    function handleSetWithdraw(){
+        setDepositing(false);
+        setVault('150,195');
+        setRatio('1.0012')
+    }
 
     return(
         <DepositStyle>
@@ -20,10 +38,10 @@ export default function Deposit({
             <UpStyle>
                 <div>
                     <h1>USDC-T-ETH</h1>
-                    <h2>Current Vault Deposits ---- $100,000</h2>
-                    <h2>Max Vault Capacity     ---- $1,000,000</h2>
+                    <h2>Current Vault Deposits ---- ${vault}</h2>
+                    <h2>Max Vault Capacity     ---- $1000000</h2>
                 </div>
-                <ImgStyle src={usdcImg}/>
+                <ImgStyle src={"/static/img/usdc.png"}/>
             </UpStyle>
             <BottomStyle>
                 <DescriptionStyle>
@@ -51,14 +69,14 @@ export default function Deposit({
                         depositing={depositing}>
                             Deposit
                         </LeftHeader>
-                        <RightHeader onClick={() => setDepositing(false)}
+                        <RightHeader onClick={handleSetWithdraw}
                         withdrawing={!depositing}>
                             Withdraw
                         </RightHeader>
                     </HeaderDeposits>
                     <DepositingOrWithdrawingStyle>
                         <div>
-                            <h3>Amount (USDC)</h3>
+                            <h3>Amount (USDC)   ---------------- <span>Vault Shares: {balance} / 1 share = {ratio} USDC</span> </h3>
                             <input
                             value={valueDepositWithDraw}
                             onChange={ e => setValueDepositDraw(e.target.value)}
@@ -66,6 +84,7 @@ export default function Deposit({
                         </div>
                         <DepositWithDrawButton
                         connected={isConnected}
+                        onClick={handleDepositWithDraw}
                         >{depositing ? 'Deposit' : 'Withdraw'}</DepositWithDrawButton>
                     </DepositingOrWithdrawingStyle>
                 </DepositWithDrawStyle>
@@ -208,6 +227,9 @@ const DepositingOrWithdrawingStyle = styled.div`
             color: #FFFFFF;
             display: block;
             margin-bottom: 10px;
+            span{
+                font-weight: bold;
+            }
         }
         input{
             border: none;
