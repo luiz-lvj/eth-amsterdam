@@ -2,8 +2,11 @@ import styled from "styled-components";
 import Footer from "./Footer";
 import Header from "./Header";
 import usdcImg from "../img/usdc.png";
+import { useState } from "react";
 
 export default function Deposit(){
+    const [depositing, setDepositing] = useState(true);
+
     return(
         <DepositStyle>
             <Header/>
@@ -35,6 +38,16 @@ export default function Deposit(){
                     asset going to zero, the user won't lose any money at all and will get their principal back.
                     </p>
                 </DescriptionStyle>
+                <DepositWithDrawStyle>
+                    <HeaderDeposits>
+                        <LeftHeader>
+                            Deposit
+                        </LeftHeader>
+                        <RightHeader>
+                            Withdraw
+                        </RightHeader>
+                    </HeaderDeposits>
+                </DepositWithDrawStyle>
             </BottomStyle>
             <Footer/>
         </DepositStyle>
@@ -109,4 +122,41 @@ const DescriptionStyle = styled.div`
         margin-bottom: 5px;
         text-align: justify;
     }
+`;
+
+const DepositWithDrawStyle = styled.div`
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    background: #00010E;
+    width: 50%;
+    border-radius: 30px;
+`;
+
+const HeaderDeposits = styled.div`
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid #08FBEC;
+    height: 50px;
+`;
+
+const LeftHeader = styled.h1`
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    color: #FFFFFF;
+    align-items: center;
+    font-weight: bold;
+    border-right: 2px solid #08FBEC;
+`;
+
+const RightHeader = styled.h1`
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    color: #FFFFFF;
+    align-items: center;
+    font-weight: bold;
 `;
