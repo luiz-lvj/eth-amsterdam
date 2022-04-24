@@ -7,13 +7,30 @@ import Vaults from "./components/Vaults";
 
 function App() {
 
+  const [walletAccount, setWalletAccount] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
+  const [getConnectedChain, setConnectedChain] = useState('');
+
+
   return (
     <BrowserRouter>
       <GlobalStyle/>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/" element={<Vaults/>}/>
-        <Route path="/ppn" element={<Deposit/>}/>
+        <Route path="/" element={<Home
+        walletAccount={walletAccount} setWalletAccount={setWalletAccount}
+        isConnected={isConnected} setIsConnected={setIsConnected}
+        getConnectedChain={getConnectedChain} setConnectedChain={setConnectedChain}
+        />}/>
+        <Route path="/vaults" element={<Vaults
+        walletAccount={walletAccount} setWalletAccount={setWalletAccount}
+        isConnected={isConnected} setIsConnected={setIsConnected}
+        getConnectedChain={getConnectedChain} setConnectedChain={setConnectedChain}
+        />}/>
+        <Route path="/ppn" element={<Deposit
+        walletAccount={walletAccount} setWalletAccount={setWalletAccount}
+        isConnected={isConnected} setIsConnected={setIsConnected}
+        getConnectedChain={getConnectedChain} setConnectedChain={setConnectedChain}
+        />}/>
       </Routes>
     </BrowserRouter>
   );

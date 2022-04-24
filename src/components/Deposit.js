@@ -4,14 +4,19 @@ import Header from "./Header";
 import usdcImg from "../img/usdc.png";
 import { useState } from "react";
 
-export default function Deposit(){
+export default function Deposit({
+    walletAccount, setWalletAccount, isConnected, setIsConnected, getConnectedChain, setConnectedChain
+}){
     const [depositing, setDepositing] = useState(true);
     const [valueDepositWithDraw, setValueDepositDraw] = useState(0);
-    const [connected, setConnected] = useState(true);
 
     return(
         <DepositStyle>
-            <Header/>
+            <Header
+            walletAccount={walletAccount} setWalletAccount={setWalletAccount}
+            isConnected={isConnected} setIsConnected={setIsConnected}
+            getConnectedChain={getConnectedChain} setConnectedChain={setConnectedChain}
+            />
             <UpStyle>
                 <div>
                     <h1>USDC-T-ETH</h1>
@@ -60,7 +65,7 @@ export default function Deposit(){
                             ></input>
                         </div>
                         <DepositWithDrawButton
-                        connected={connected}
+                        connected={isConnected}
                         >{depositing ? 'Deposit' : 'Withdraw'}</DepositWithDrawButton>
                     </DepositingOrWithdrawingStyle>
                 </DepositWithDrawStyle>

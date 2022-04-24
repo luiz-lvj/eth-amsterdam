@@ -1,10 +1,75 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function Header(){
+export default function Header({
+    walletAccount, setWalletAccount, isConnected, setIsConnected, getConnectedChain, setConnectedChain
+}){
     const navigate = useNavigate();
-    const [connected, setConnected] = useState(false);
+
+
+    useEffect(() => {
+        setIsConnected(walletAccount ? true : false);
+    }, [walletAccount]);
+    
+    const networkChanged = async () => {
+        const chainID = await window.ethereum.request({ method: 'eth_chainId' });
+        setConnectedChain(chainID);
+    };
+
+    const handleConnectOnce = async () => {
+        if(!window.ethereum){
+            alert('Metamask not found!');
+            return;
+        }
+        if(isConnected){
+            const confirmDisconnect = window.confirm("Do you really want to disconnect from Metamask?");
+            if(!confirmDisconnect){
+                return;
+            }
+            handleDisconnect();
+            return;
+        }
+        const accounts = await window.ethereum
+        .request({
+            method: 'wallet_requestPermissions',
+            params: [
+            {
+                eth_accounts: {},
+            },
+            ],
+        })
+        .then(() => window.ethereum.request({ method: 'eth_requestAccounts' }));
+
+        setWalletAccount(accounts[0]);
+    };
+
+    const handleDisconnect = async () => {
+        console.log('Disconnecting MetaMask...');
+        setIsConnected(false);
+        setWalletAccount('');
+    };
+
+    useEffect(() => {
+        async function fetchData(){
+            const chainID = await window.ethereum.request({ method: 'eth_chainId' });
+            setConnectedChain(chainID);
+            console.log('useEffect, chainID, ', chainID);
+
+            const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+            });
+            if (accounts[0]) {
+            setWalletAccount(accounts[0]);
+            }
+
+            window.ethereum.on('chainChanged', networkChanged);
+            return () => {
+            window.ethereum.removeListener('chainChanged', networkChanged);
+            };
+        }
+        fetchData();
+    }, []);
 
     return(
         <HeaderStyle>
@@ -13,7 +78,14 @@ export default function Header(){
                 <h2 onClick={() => navigate("/")}>Home</h2>
                 <h2 onClick={() => navigate("/vaults")}>Vaults</h2>
             </MenuStyle>
-            <ConnectWalletButton onClick={() => setConnected(true)}>{!connected? 'Connect Wallet' : 'abc'}</ConnectWalletButton>
+            <ConnectWalletButton onClick={handleConnectOnce}>{!isConnected? 'Connect Wallet' : 
+            walletAccount.substr(0, 3) +
+            '...' +
+            walletAccount.substr(
+                walletAccount.length - 3,
+                walletAccount.length
+            )
+            }</ConnectWalletButton>
         </HeaderStyle>
     );
 }
